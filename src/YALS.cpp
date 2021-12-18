@@ -18,6 +18,10 @@ using std::endl;
 int yalsVer = 50;
 string terminalPrompt = ">> ";
 
+struct yalsApp {
+	auto run() {}
+};
+
 int main() {
 	cout.flush();
 	signal(SIGINT, SIG_IGN);
