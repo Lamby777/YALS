@@ -9,6 +9,7 @@
 #include <iostream>
 #include <signal.h>
 #include "salt.h"
+#include "colors.h"
 
 using namespace std;
 
@@ -40,7 +41,7 @@ string replace(string text, string oldVal, string newVal) {
 }
 
 void insertTerminalPrompt(void) {
-	cout << replace(terminalPrompt, "{user}", getenv("USER"));
+	cout << replace(terminalPrompt, "{user}", BOLDGREEN + string(getenv("USER")) + RESET);
 }
 
 string resolveCommand(string cmd) {
@@ -52,7 +53,7 @@ int main() {
 	cout.flush();
 	signal(SIGINT, SIG_IGN);
 
-	yalsLog("Running YALS " + yalsVer);
+	yalsLog(string(BOLDAQUA) + "Running YALS " + BOLDRED + yalsVer + RESET);
 
 	// REPL
 	string cmd;
