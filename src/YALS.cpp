@@ -35,6 +35,11 @@ void insertTerminalPrompt(void) {
 	cout << replace(terminalPrompt, "{user}", getenv("USER"));
 }
 
+string resolveCommand(string cmd) {
+	if (cmd == "salt") return salt::run();
+	return 0;
+}
+
 int main() {
 	cout.flush();
 	signal(SIGINT, SIG_IGN);
@@ -45,9 +50,7 @@ int main() {
 	string cmd;
 	insertTerminalPrompt();
 	while (getline(cin, cmd)) {
-		string output;
-
-		if (cmd == "salt") output = salt::run();
+		string output = resolveCommand(cmd);
 
 		// Display output if exists
 		if (output.length() > 0) yalsLog(output);
