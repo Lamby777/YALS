@@ -12,8 +12,12 @@
 
 using namespace std;
 
+// Current version-string of YALS, printed at start.
+// Follows my own versioning syntax, because screw SemVer. >:)
 string yalsVer = "d01";
-string terminalPrompt = ">> ";
+
+// Prompt before terminal commands. Keep it simple!
+string terminalPrompt = "{user} >> ";
 
 struct yalsApp {
 	auto run() {}
@@ -21,6 +25,14 @@ struct yalsApp {
 
 void yalsLog(string text) {
 	cout << text << endl;
+}
+
+string replace(string text, string oldVal, string newVal) {
+	return text.replace(text.find(oldVal), string(oldVal).size(), newVal);
+}
+
+void insertTerminalPrompt(void) {
+	cout << replace(terminalPrompt, "{user}", getenv("USER"));
 }
 
 int main() {
@@ -31,7 +43,7 @@ int main() {
 
 	// REPL
 	string cmd;
-	cout << terminalPrompt;
+	insertTerminalPrompt();
 	while (getline(cin, cmd)) {
 		string output;
 
@@ -41,7 +53,7 @@ int main() {
 		if (output.length() > 0) yalsLog(output);
 
 		// Prep next input
-		cout << terminalPrompt;
+		insertTerminalPrompt();
 	}
 
 	// Cleanup
