@@ -19,6 +19,14 @@ string yalsVer = "d01";
 // Prompt before terminal commands. Keep it simple!
 string terminalPrompt = "{user} >> ";
 
+// Message for commands not found
+string yalsCmd404Msg = "Command not found...";
+
+
+
+
+
+
 struct yalsApp {
 	auto run() {}
 };
@@ -37,7 +45,7 @@ void insertTerminalPrompt(void) {
 
 string resolveCommand(string cmd) {
 	if (cmd == "salt") return salt::run();
-	return 0;
+	return yalsCmd404Msg;
 }
 
 int main() {
@@ -50,10 +58,14 @@ int main() {
 	string cmd;
 	insertTerminalPrompt();
 	while (getline(cin, cmd)) {
-		string output = resolveCommand(cmd);
+		// Prevent empty commands
+		if (cmd.length() != 0) {
+			// Run command (or give "not found" error)
+			string output = resolveCommand(cmd);
 
-		// Display output if exists
-		if (output.length() > 0) yalsLog(output);
+			// Display output if exists
+			if (output.length() > 0) yalsLog(output);
+		}
 
 		// Prep next input
 		insertTerminalPrompt();
