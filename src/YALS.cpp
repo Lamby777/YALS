@@ -15,33 +15,36 @@ using std::cin;
 using std::string;
 using std::endl;
 
-int yalsVer = 50;
+string yalsVer = "d01";
 string terminalPrompt = ">> ";
 
 struct yalsApp {
 	auto run() {}
 };
 
+void yalsLog(string text) {
+	cout << text << endl;
+}
+
 int main() {
 	cout.flush();
 	signal(SIGINT, SIG_IGN);
 
-	cout << "Running YALS v" << yalsVer << endl;
+	yalsLog("Running YALS " + yalsVer);
 
 	// REPL
 	string cmd;
 	cout << terminalPrompt;
 	while (std::getline(cin, cmd)) {
-		cout << terminalPrompt;
-
 		string output;
 
 		if (cmd == "salt") output = salt::run();
 
 		// Display output if exists
-		if (output.length() > 0) {
-			cout << output << endl;
-		}
+		if (output.length() > 0) yalsLog(output);
+
+		// Prep next input
+		cout << terminalPrompt;
 	}
 
 	// Cleanup

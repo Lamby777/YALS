@@ -27,6 +27,7 @@ int keyin(void) {
 
 string run() {
 	// Init SALT
+	cout.flush();
 	bool running = true;
 	string file = "";
 	int curCol = 0;		// X
@@ -54,10 +55,10 @@ string run() {
 		if (key == -1)
 			continue;
 
-		// On exit
+		// On ESC exit
 		if (key == 27) {
-			printw("Received exit (ESC)\n");
-			refresh();
+			//printw("Received exit (ESC)\n");
+			//refresh();
 			running = false;
 		} else {
 			mvprintw(curCol, curLine, "%c\n", (char) key);
