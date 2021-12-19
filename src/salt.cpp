@@ -12,10 +12,7 @@
 #include <menu.h>
 #include <signal.h>
 
-using std::cout;
-using std::cin;
-using std::string;
-using std::endl;
+using namespace std;
 
 namespace salt {
 int keyin(void) {

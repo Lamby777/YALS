@@ -10,10 +10,7 @@
 #include <signal.h>
 #include "salt.h"
 
-using std::cout;
-using std::cin;
-using std::string;
-using std::endl;
+using namespace std;
 
 string yalsVer = "d01";
 string terminalPrompt = ">> ";
@@ -35,7 +32,7 @@ int main() {
 	// REPL
 	string cmd;
 	cout << terminalPrompt;
-	while (std::getline(cin, cmd)) {
+	while (getline(cin, cmd)) {
 		string output;
 
 		if (cmd == "salt") output = salt::run();
