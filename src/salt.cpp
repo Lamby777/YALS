@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <vector>
 #include <ncurses.h>
 #include <menu.h>
 #include <signal.h>
@@ -22,13 +23,19 @@ int keyin(void) {
 	return ch;
 }
 
+void putCharToFile(int x, int y, char ch) {
+	//mvprintw(col, line, "%c\n", (char) ch);
+	mvprintw(y, x, "%c", ch);
+}
+
 string run() {
 	// Init SALT
 	cout.flush();
 	bool running = true;
 	string file = "";
-	int curCol = 0;		// X
-	int curLine = 0;	// Y
+	vector<vector<char>> fileContent;
+	int curX = 0;	// X
+	int curY = 0;	// Y
 
 	// Override CTRL + C and CTRL + D
 	signal(SIGINT, SIG_IGN);
@@ -58,7 +65,8 @@ string run() {
 			//refresh();
 			running = false;
 		} else {
-			mvprintw(curCol, curLine, "%c\n", (char) key);
+			putCharToFile(curX, curY, (char) key);
+			curX++;
 		}
 	}
 
