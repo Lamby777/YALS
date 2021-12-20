@@ -52,11 +52,8 @@ void putCharToFile(int x, int y, char ch) {
 	content[y][x] = ch;
 	mvprintw(5, 0, "%i", x);
 	mvprintw(5, 5, "%i", y);
-	int i = 6;
-	for (auto st : content) {
-		mvprintw(i, 0, "%s", st);
-		i++;
-	}
+	for(int i = 0; i < (int) content.size(); i++)
+	    mvprintw(6+i, 0, "%s", content[i]);
 	// Insert into terminal
 	mvprintw(y, x, "%c", ch);
 }
