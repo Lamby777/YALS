@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 #include <ncurses.h>
 #include <menu.h>
 #include <signal.h>
@@ -16,6 +17,12 @@
 using namespace std;
 
 namespace salt {
+
+string file = "";
+vector<string> content = {string("")};
+int curX = 0;	// X
+int curY = 0;	// Y
+
 int keyin(void) {
 	int ch = getch();
 
@@ -23,8 +30,34 @@ int keyin(void) {
 	return ch;
 }
 
+void insertNewLine(int x, int y, bool causedByUser) {
+	// Split line into half at X
+	string beforeCut = content[y].substr(0, x);
+	string afterCut = content[y].substr(x+1);
+
+	// Add new line after Y
+	content.insert(content.begin() + (y+1), afterCut);
+
+	// Set old line to cut version
+	content[y] = beforeCut;
+
+	/*if (causedByUser) {
+		curX = 0;
+		curY = y+1;
+	}*/
+}
+
 void putCharToFile(int x, int y, char ch) {
-	//mvprintw(col, line, "%c\n", (char) ch);
+	// Insert into vector
+	content[y][x] = ch;
+	mvprintw(5, 0, "%i", x);
+	mvprintw(5, 5, "%i", y);
+	int i = 6;
+	for (auto st : content) {
+		mvprintw(i, 0, "%s", st);
+		i++;
+	}
+	// Insert into terminal
 	mvprintw(y, x, "%c", ch);
 }
 
@@ -32,10 +65,6 @@ string run() {
 	// Init SALT
 	cout.flush();
 	bool running = true;
-	string file = "";
-	vector<vector<char>> fileContent;
-	int curX = 0;	// X
-	int curY = 0;	// Y
 
 	// Override CTRL + C and CTRL + D
 	signal(SIGINT, SIG_IGN);
@@ -64,6 +93,8 @@ string run() {
 			//printw("Received exit (ESC)\n");
 			//refresh();
 			running = false;
+		} else if (key == 10) {
+			insertNewLine(curX, curY, true);
 		} else {
 			putCharToFile(curX, curY, (char) key);
 			curX++;
