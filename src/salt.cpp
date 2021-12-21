@@ -32,19 +32,19 @@ int keyin(void) {
 
 void insertNewLine(int x, int y, bool causedByUser) {
 	// Split line into half at X
-	string beforeCut = content[y].substr(0, x);
-	string afterCut = content[y].substr(x+1);
+	string beforeCut	= content[y].substr(0, x);
+	string afterCut		= content[y].substr(x);
 
 	// Add new line after Y
-	content.insert(content.begin() + (y+1), afterCut);
+	content.insert(content.begin() + (y), afterCut);
 
 	// Set old line to cut version
 	content[y] = beforeCut;
 
-	/*if (causedByUser) {
+	if (causedByUser) {
 		curX = 0;
 		curY = y+1;
-	}*/
+	}
 }
 
 void putCharToFile(int x, int y, char ch) {
