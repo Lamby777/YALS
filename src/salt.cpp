@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <string.h>
 #include <vector>
 #include <unistd.h>
 #include <ncurses.h>
@@ -19,9 +20,20 @@ using namespace std;
 namespace salt {
 
 string file = "";
-vector<string> content = {string("")};
+vector<string> content = { "" };
 int curX = 0;	// X
 int curY = 0;	// Y
+
+char* substr(const char *input, int offset, int len, char *dest) {
+	int input_len = strlen(input);
+
+	if (offset + len > input_len) {
+		return NULL;
+	}
+
+	strncpy(dest, input + offset, len);
+	return dest;
+}
 
 int keyin(void) {
 	int ch = getch();
@@ -32,18 +44,22 @@ int keyin(void) {
 
 void insertNewLine(int x, int y, bool causedByUser) {
 	// Split line into half at X
-	string beforeCut	= content[y].substr(0, x);
-	string afterCut		= content[y].substr(x);
+	const char* cy = content[y].c_str();
+
+	char* beforeCut = NULL;
+	substr(cy, 0, x, beforeCut);
+	char* afterCut = NULL;
+	substr(cy, x, (strlen(cy) - x)-1, afterCut);
 
 	// Add new line after Y
-	content.insert(content.begin() + (y), afterCut);
+	content.insert(content.begin() + y, afterCut);
 
 	// Set old line to cut version
 	content[y] = beforeCut;
 
 	if (causedByUser) {
 		curX = 0;
-		curY = y+1;
+		curY = y + 1;
 	}
 }
 
@@ -52,8 +68,8 @@ void putCharToFile(int x, int y, char ch) {
 	content[y][x] = ch;
 	mvprintw(5, 0, "%i", x);
 	mvprintw(5, 5, "%i", y);
-	for(int i = 0; i < (int) content.size(); i++)
-	    mvprintw(6+i, 0, "%s", content[i]);
+	for (int i = 0; i < (int) content.size(); i++)
+		mvprintw(6 + i, 0, content[i].c_str());
 	// Insert into terminal
 	mvprintw(y, x, "%c", ch);
 }
@@ -90,6 +106,14 @@ string run() {
 			//printw("Received exit (ESC)\n");
 			//refresh();
 			running = false;
+		} else if (key == 37) { // Left
+			curX--;
+		} else if (key == 39) { // Right
+			curX++;
+		} else if (key == 38) { // Up
+			curY--;
+		} else if (key == 40) { // Down
+			curY++;
 		} else if (key == 10) {
 			insertNewLine(curX, curY, true);
 		} else {
@@ -101,4 +125,5 @@ string run() {
 	endwin();
 	return "SALT ended successfully";
 }
+
 }
