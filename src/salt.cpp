@@ -106,13 +106,13 @@ string run() {
 			//printw("Received exit (ESC)\n");
 			//refresh();
 			running = false;
-		} else if (key == 37) { // Left
+		} else if (key == KEY_LEFT) { // Left
 			curX--;
-		} else if (key == 39) { // Right
+		} else if (key == KEY_RIGHT) { // Right
 			curX++;
-		} else if (key == 38) { // Up
+		} else if (key == KEY_UP) { // Up
 			curY--;
-		} else if (key == 40) { // Down
+		} else if (key == KEY_DOWN) { // Down
 			curY++;
 		} else if (key == 10) {
 			insertNewLine(curX, curY, true);
