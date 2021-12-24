@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/YALS.cpp \
-../src/salt.cpp 
+../src/salt.cpp \
+../src/util.cpp 
 
 CPP_DEPS += \
 ./src/YALS.d \
-./src/salt.d 
+./src/salt.d \
+./src/util.d 
 
 OBJS += \
 ./src/YALS.o \
-./src/salt.o 
+./src/salt.o \
+./src/util.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -35,7 +38,7 @@ src/salt.o: ../src/salt.cpp src/subdir.mk
 clean: clean-src
 
 clean-src:
-	-$(RM) ./src/YALS.d ./src/YALS.o ./src/salt.d ./src/salt.o
+	-$(RM) ./src/YALS.d ./src/YALS.o ./src/salt.d ./src/salt.o ./src/util.d ./src/util.o
 
 .PHONY: clean-src
 

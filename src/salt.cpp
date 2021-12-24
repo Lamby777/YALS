@@ -8,12 +8,13 @@
  */
 
 #include <iostream>
-#include <string.h>
 #include <vector>
+#include <string.h>
 #include <unistd.h>
 #include <ncurses.h>
 #include <menu.h>
 #include <signal.h>
+#include "util.h"
 
 using namespace std;
 
@@ -23,17 +24,6 @@ string file = "";
 vector<string> content = { "" };
 int curX = 0;	// X
 int curY = 0;	// Y
-
-char* substr(const char *input, int offset, int len, char *dest) {
-	int input_len = strlen(input);
-
-	if (offset + len > input_len) {
-		return NULL;
-	}
-
-	strncpy(dest, input + offset, len);
-	return dest;
-}
 
 int keyin(void) {
 	int ch = getch();
@@ -47,9 +37,9 @@ void insertNewLine(int x, int y, bool causedByUser) {
 	const char* cy = content[y].c_str();
 
 	char* beforeCut = NULL;
-	substr(cy, 0, x, beforeCut);
+	util::substr(cy, 0, x, beforeCut);
 	char* afterCut = NULL;
-	substr(cy, x, (strlen(cy) - x)-1, afterCut);
+	util::substr(cy, x, (strlen(cy) - x)-1, afterCut);
 
 	// Add new line after Y
 	content.insert(content.begin() + y, afterCut);

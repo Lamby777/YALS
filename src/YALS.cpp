@@ -10,6 +10,7 @@
 #include <signal.h>
 #include "salt.h"
 #include "colors.h"
+#include "util.h"
 
 using namespace std;
 
@@ -25,9 +26,6 @@ string yalsCmd404Msg = "Command not found...";
 
 
 
-
-
-
 struct yalsApp {
 	auto run() {}
 };
@@ -36,12 +34,8 @@ void yalsLog(string text) {
 	cout << text << endl;
 }
 
-string replace(string text, string oldVal, string newVal) {
-	return text.replace(text.find(oldVal), string(oldVal).size(), newVal);
-}
-
 void insertTerminalPrompt(void) {
-	cout << replace(terminalPrompt, "{user}", BOLDGREEN + string(getenv("USER")) + RESET);
+	cout << util::replace(terminalPrompt, "{user}", BOLDGREEN + string(getenv("USER")) + RESET);
 }
 
 string resolveCommand(string cmd) {
